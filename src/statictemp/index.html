@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mean Organizer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="../public/javascripts/kanbanApp.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../public/stylesheets/style.css" />
+  </head>
+  <body ng-app="kanbanApp">
+    
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Mean Organizer</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    
+    
+    <div id='main' ng-controller="mainController">
+  
+      <div class="col-md-3 details-container">
+        
+        <div ng-show="detailedTask">
+          <h3>{{detailedTask.title}}</h3>
+          <div ng-click="editDetails()" ng-hide="details_edit_mode" kb-click-focus-input class="task-details">
+            <span ng-show="!detailedTask.details">Detailed description</span>
+            {{detailedTask.details}}
+          </div>
+          <textarea ng-blur="saveDetails()" kb-enter-keypress="saveDetails()" ng-model="detailedTask.details" ng-show="details_edit_mode" class="task-details-text" placeholder="Detailed description"></textarea>
+          <p>Created by {{detailedTask.created_by}} <br /> at {{detailedTask.created_at | date:"h:mm:ss 'on' MMM d, y"}}</p>
+          <input type="button" ng-show="detailsChanged" ng-click="saveDetails()" value="Save" class="btn" />
+        </div>
+        
+        <div ng-hide="detailedTask" class="welcome">
+          <h2>Welcome!</h2>
+          <p>This area will be used to show and edit a task. But it will also contain a cool how-to-use for the app.</p>
+          <p>The how-to-use will disappear once we create or click on a task, so, the task details will be shown instead.</p>
+          <p>And the how-to-use will appear again when clicking the app title. But that will not reload the page!</p>
+        </div>
+        
+      </div>
+      
+      
+      <div class="col-md-9 column-container">
+        
+        <div>
+          <input type="button" value="+ New Column" ng-click="createColumn()" class="btn" />
+        </div>     
+        <div ng-repeat="column in columns" class="column">
+          <h3 class="column-name">{{column.name}}</h3>
+          <div ng-repeat="task in column.tasks" class="tasks">
+            <div class="task-container">
+              <!--<div>options</div>-->
+              <div class="task-title" ng-click="edit(task)" ng-hide="task.edit_mode" kb-click-focus-input>{{task.title}}</div>
+              <textarea class="task-input" ng-blur="save(task)" kb-enter-keypress="save(task)" ng-model="task.title" ng-show="task.edit_mode" ng-focus="task.edit_mode"></textarea>
+            </div>
+          </div>
+          
+          <textarea class="new-task-input" ng-blur="createTask(column)" kb-enter-keypress="createTask(column)" ng-model="column.newTask.title" placeholder="New Task"></textarea>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+  </body>
+</html>
