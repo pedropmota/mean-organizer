@@ -1,32 +1,49 @@
-var app = angular.module('kanbanApp', []);
+var app = angular.module('kanbanApp', ['ngResource']);
 
-app.controller('mainController', function($scope) {
+app.factory('panelService', function($resource) {
+  return $resource('/api/panels/:id'); // Note the full endpoint address
+});
+
+app.factory('taskService', ['$resource', function($resource) {
+  return $resource('/api/tasks/:id', null, {
+   'update': { method:'PUT' }
+  });
+}]);
+
+app.controller('mainController', function($scope, $http, panelService, taskService) {
   
-  $scope.columns = [];
+  $scope.panels = [];
   
   $scope.detailedTask = null;
   
-  $scope.createColumn = function(name) {
-    $scope.columns.push({ 
-      name: name ? name : 'New Column', 
+  $scope.createPanel = function(name) {
+    var newPanel = { 
+      name: name ? name : 'New Panel', 
       tasks: [],
       newTask: { created_by: '', title: '', created_at: '', edit_mode: false }
+    };
+    
+    panelService.save(newPanel, function(response) {
+      newPanel.id = response.id;
+      $scope.panels.push(newPanel);
     });
-  }
+  };
   
-  $scope.createColumn('Welcome');
+  $scope.createPanel('Welcome');
   
-	$scope.createTask = function(column) {
-    if (!column.newTask.title)
+	$scope.createTask = function(panel) {
+    if (!panel.newTask.title)
       return;
       
-		column.newTask.created_at = Date.now();
-		column.newTask.created_by = 'Pedro';
-		column.tasks.push(column.newTask);
-    
-    $scope.detailedTask = column.newTask;
-    
-		column.newTask = { created_by: '', title: '', created_at: '' };
+		panel.newTask.created_at = Date.now();
+		panel.newTask.created_by = 'Pedro';
+		
+    taskService.save(panel.newTask, function(response) {
+      panel.newTask.id = response.id;
+      panel.tasks.push(panel.newTask);
+      $scope.detailedTask = panel.newTask;
+      panel.newTask = { created_by: '', title: '', created_at: '' };
+    })
 	};
   
 	$scope.edit = function(task) {
@@ -36,8 +53,9 @@ app.controller('mainController', function($scope) {
 	
 	$scope.save = function(task) {
 		task.edit_mode = false;
-	  
-		//save
+    taskService.update({id: task.id}, task, function(response) {
+      task.id = response.id;
+    });
 	}
   
   $scope.editDetails = function() {
@@ -51,6 +69,7 @@ app.controller('mainController', function($scope) {
   }
 });
 
+//TODO: Change it to be "Blur OnEnter".
 app.directive('kbEnterKeypress', function() {
 
   return {

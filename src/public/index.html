@@ -3,9 +3,10 @@
   <head>
     <title>Mean Organizer</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
-    <script src="../public/javascripts/kanbanApp.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-resource.js"></script>
+    <script src="javascripts/kanbanApp.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="../public/stylesheets/style.css" />
+    <link rel="stylesheet" href="stylesheets/style.css" />
   </head>
   <body ng-app="kanbanApp">
     
@@ -57,14 +58,14 @@
       </div>
       
       
-      <div class="col-md-9 column-container">
+      <div class="col-md-9 panel-container">
         
         <div>
-          <input type="button" value="+ New Column" ng-click="createColumn()" class="btn" />
+          <input type="button" value="+ New Panel" ng-click="createPanel()" class="btn" />
         </div>     
-        <div ng-repeat="column in columns" class="column">
-          <h3 class="column-name">{{column.name}}</h3>
-          <div ng-repeat="task in column.tasks" class="tasks">
+        <div ng-repeat="panel in panels" class="panel">
+          <h3 class="panel-name">{{panel.name}}</h3>
+          <div ng-repeat="task in panel.tasks" class="tasks">
             <div class="task-container">
               <!--<div>options</div>-->
               <div class="task-title" ng-click="edit(task)" ng-hide="task.edit_mode" kb-click-focus-input>{{task.title}}</div>
@@ -72,7 +73,7 @@
             </div>
           </div>
           
-          <textarea class="new-task-input" ng-blur="createTask(column)" kb-enter-keypress="createTask(column)" ng-model="column.newTask.title" placeholder="New Task"></textarea>
+          <textarea class="new-task-input" ng-blur="createTask(panel)" kb-enter-keypress="createTask(panel)" ng-model="panel.newTask.title" placeholder="New Task"></textarea>
         </div>
         
       </div>

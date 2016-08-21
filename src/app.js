@@ -4,9 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+require('./models/models');
 var api = require('./routes/api');
 //var auth = require('./routes/authenticate');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/mean-organizer');
 
 var app = express();
 
