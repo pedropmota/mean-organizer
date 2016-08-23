@@ -43,7 +43,7 @@
             <span ng-show="!detailedTask.details">Detailed description</span>
             {{detailedTask.details}}
           </div>
-          <textarea ng-blur="saveDetails()" kb-enter-keypress="saveDetails()" ng-model="detailedTask.details" ng-show="details_edit_mode" class="task-details-text" placeholder="Detailed description"></textarea>
+          <textarea ng-blur="saveDetails()" ng-model="detailedTask.details" ng-show="details_edit_mode" kb-blur-on-enter class="task-details-text" placeholder="Detailed description"></textarea>
           <p>Created by {{detailedTask.created_by}} <br /> at {{detailedTask.created_at | date:"h:mm:ss 'on' MMM d, y"}}</p>
           <input type="button" ng-show="detailsChanged" ng-click="saveDetails()" value="Save" class="btn" />
         </div>
@@ -69,11 +69,11 @@
             <div class="task-container">
               <!--<div>options</div>-->
               <div class="task-title" ng-click="edit(task)" ng-hide="task.edit_mode" kb-click-focus-input>{{task.title}}</div>
-              <textarea class="task-input" ng-blur="save(task)" kb-enter-keypress="save(task)" ng-model="task.title" ng-show="task.edit_mode" ng-focus="task.edit_mode"></textarea>
+              <textarea class="task-input" ng-blur="save(panel,task)" ng-model="task.title" ng-show="task.edit_mode" ng-focus="task.edit_mode" kb-blur-on-enter></textarea>
             </div>
           </div>
           
-          <textarea class="new-task-input" ng-blur="createTask(panel)" kb-enter-keypress="createTask(panel)" ng-model="panel.newTask.title" placeholder="New Task"></textarea>
+          <textarea class="new-task-input" ng-blur="createTask(panel)" ng-model="panel.newTask.title" kb-blur-on-enter placeholder="New Task"></textarea>
         </div>
         
       </div>

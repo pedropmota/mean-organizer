@@ -9,7 +9,8 @@ var panelSchema = new Schema({
         { 
             created_by: { type: Schema.ObjectId, ref: 'User' },
             created_at: { type: Date, default: Date.now },
-            name: String,
+            modified_at: { type: Date, default: Date.now },
+            title: String,
             details: String
         }
     ]

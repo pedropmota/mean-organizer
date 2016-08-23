@@ -5,7 +5,7 @@ app.factory('panelService', function($resource) {
 });
 
 app.factory('taskService', ['$resource', function($resource) {
-  return $resource('/api/tasks/:id', null, {
+  return $resource('/api/panels/:panelId/tasks/:id', null, {
    'update': { method:'PUT' }
   });
 }]);
@@ -38,7 +38,7 @@ app.controller('mainController', function($scope, $http, panelService, taskServi
 		panel.newTask.created_at = Date.now();
 		panel.newTask.created_by = 'Pedro';
 		
-    taskService.save(panel.newTask, function(response) {
+    taskService.save({panelId: panel.id}, panel.newTask, function(response) {
       panel.newTask.id = response.id;
       panel.tasks.push(panel.newTask);
       $scope.detailedTask = panel.newTask;
@@ -51,9 +51,9 @@ app.controller('mainController', function($scope, $http, panelService, taskServi
     $scope.detailedTask = task;
 	}
 	
-	$scope.save = function(task) {
+	$scope.save = function(panel, task) {
 		task.edit_mode = false;
-    taskService.update({id: task.id}, task, function(response) {
+    taskService.update({panelId: panel.id, id: task.id}, task, function(response) {
       task.id = response.id;
     });
 	}
@@ -69,7 +69,26 @@ app.controller('mainController', function($scope, $http, panelService, taskServi
   }
 });
 
-//TODO: Change it to be "Blur OnEnter".
+app.directive('kbBlurOnEnter', function() {
+   return {
+    restrict: 'A',
+    link: function($scope, $element, $attrs, $controller) {
+      
+      $element.bind("keypress", function(event) {
+        
+        var keyCode = event.which || event.keyCode;
+
+        //Enter keyCode => 13
+        if (keyCode === 13) {
+          event.srcElement.blur(); 
+          event.preventDefault();
+        }
+      });
+    }
+  };
+});
+
+
 app.directive('kbEnterKeypress', function() {
 
   return {
