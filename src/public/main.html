@@ -1,0 +1,41 @@
+
+<div class="col-md-3 details-container">        
+    <div ng-show="detailedTask">
+        <h3>{{detailedTask.title}}</h3>
+        <div ng-click="editDetails()" ng-hide="details_edit_mode" kb-click-focus-input class="task-details">
+            <span ng-show="!detailedTask.details">Detailed description</span>
+            {{detailedTask.details}}
+        </div>
+        <textarea ng-blur="saveDetails()" ng-model="detailedTask.details" ng-show="details_edit_mode" kb-blur-on-enter class="task-details-text" placeholder="Detailed description"></textarea>
+        <p>Created by {{detailedTask.created_by}} <br /> at {{detailedTask.created_at | date:"h:mm:ss 'on' MMM d, y"}}</p>
+        <input type="button" ng-show="detailsChanged" ng-click="saveDetails()" value="Save" class="btn" />
+    </div>
+
+    <div ng-hide="detailedTask" class="welcome">
+        <h2>Welcome!</h2>
+        <p>This area will be used to show and edit a task. But it will also contain a cool how-to-use for the app.</p>
+        <p>The how-to-use will disappear once we create or click on a task, so, the task details will be shown instead.</p>
+        <p>And the how-to-use will appear again when clicking the app title. But that will not reload the page!</p>
+    </div>
+
+</div>
+
+
+<div class="col-md-9 panel-container">
+
+    <div>
+        <input type="button" value="+ New Panel" ng-click="createPanel()" class="btn" />
+    </div>     
+    <div ng-repeat="panel in panels" class="panel">
+        <h3 class="panel-name">{{panel.name}}</h3>
+        <div ng-repeat="task in panel.tasks" class="tasks">
+        <div class="task-container">
+            <div class="task-title" ng-click="edit(task)" ng-hide="task.edit_mode" kb-click-focus-input>{{task.title}}</div>
+            <textarea class="task-input" ng-blur="save(panel,task)" ng-model="task.title" ng-show="task.edit_mode" ng-focus="task.edit_mode" kb-blur-on-enter></textarea>
+        </div>
+        </div>
+        
+        <textarea class="new-task-input" ng-blur="createTask(panel)" ng-model="panel.newTask.title" kb-blur-on-enter placeholder="New Task"></textarea>
+    </div>
+
+</div>

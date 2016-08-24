@@ -1,4 +1,4 @@
-var app = angular.module('kanbanApp', ['ngResource']);
+var app = angular.module('kanbanApp', ['ngResource', 'ngRoute']);
 
 app.factory('panelService', function($resource) {
   return $resource('/api/panels/:id'); // Note the full endpoint address
@@ -67,6 +67,34 @@ app.controller('mainController', function($scope, $http, panelService, taskServi
     
     //save
   }
+});
+
+app.controller('loginController', function($scope, $http, panelService, taskService) {
+  
+  $scope.error_message = '';
+
+  $scope.login = function() {
+
+  }
+
+});
+
+app.config(function($routeProvider, $locationProvider) {
+
+  $routeProvider
+  
+    .when('/', {
+      templateUrl: 'main.html',
+      controller: 'mainController',
+
+    })
+
+    .when('/Login', {
+      templateUrl: 'login.html',
+      controller: 'loginController'
+    })
+
+
 });
 
 app.directive('kbBlurOnEnter', function() {
