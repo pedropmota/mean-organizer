@@ -1,2 +1,2 @@
 # mean-organizer
-A cool and user friendly task organizer, created using the MEAN Stack.
+A cool one-page application for keeping and organizing tasks. Developed using the <a href="http:mean.io" target="_blank">MEAN Stack</a>.
