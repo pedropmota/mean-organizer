@@ -4,6 +4,14 @@ var mongoose = require('mongoose');
 var router = express.Router();
 var Panel = mongoose.model('Panel');
 
+function verifyAuthentication(req, res, next)  {
+    if (!req.isAuthenticated())
+        return res.status(401).send('Authentication required.');
+    return next();
+}
+
+//router.use(verifyAuthentication);
+
 router.route('/panels')
   
   .get(function(req, res, next) {

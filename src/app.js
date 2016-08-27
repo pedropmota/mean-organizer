@@ -4,9 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var session = require('express-session');
 require('./models/models');
 var api = require('./routes/api');
-//var auth = require('./routes/authenticate');
+var auth = require('./routes/authenticate');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mean-organizer');
@@ -23,10 +25,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'under the doormat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.session());
 
+app.use('/auth', auth);
 app.use('/api', api);
-//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
