@@ -2,9 +2,9 @@
 
     <div class="credentials">
         
-        <h2>Log In</h2>
+        <h2>Register</h2>
         <p class="text-warning">{{error_message}}</p>
-        <form ng-submit="login()">
+        <form ng-submit="register()">
             <div class="form-group">
                 <label for="inputUsername">Username</label>
                 <input class="form-control" ng-model="user.username" id="inputUsername" placeholder="Enter username">
@@ -14,15 +14,10 @@
                 <label for="inputPassword">Password</label>
                 <input type="password" ng-model="user.password" class="form-control" id="inputPassword" placeholder="Password">
             </div>
-<!--
-            <input type="text" ng-model="globalTest" />
-            <br />-->
-            {{globalTest}}
 
             <div class="form-group text-center">
 
-                <button type="submit" class="btn btn-primary">Login</button>
-                <a class="btn btn-default" href="#/Register" role="button">Register</a>
+                <button type="submit" class="btn btn-primary">Register</button>
                 <a class="btn btn-default" href="#/" role="button">Cancel</a>
             </div>
         </form>

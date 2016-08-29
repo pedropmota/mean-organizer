@@ -1,8 +1,13 @@
-var app = angular.module('kanbanApp', ['ngResource', 'ngRoute']);
-
-app.factory('panelService', function($resource) {
-  return $resource('/api/panels/:id'); // Note the full endpoint address
+var app = angular.module('kanbanApp', ['ngResource', 'ngRoute']).run(function($http, $rootScope) {
+  $http.get('/auth/login-status').then(function onSuccess(response) {
+    $rootScope.isLoggedIn = response.data.isLoggedIn;
+    $rootScope.currentUser = response.data.username;
+  });
 });
+
+app.factory('panelService', ['$resource', function($resource) {
+  return $resource('/api/panels/:id');
+}]);
 
 app.factory('taskService', ['$resource', function($resource) {
   return $resource('/api/panels/:panelId/tasks/:id', null, {
@@ -10,7 +15,26 @@ app.factory('taskService', ['$resource', function($resource) {
   });
 }]);
 
-app.controller('mainController', function($scope, $http, panelService, taskService) {
+app.factory('authService', ['$window', function($window) {
+  return {
+    isLoggedIn: false,
+    username: '',
+    setAsLoggedIn: function(userName) {
+      isLoggedIn = true;
+      username = userName;
+    },
+    handleAuthorizationError: function(error) {
+      if (error.status === 401) {
+        isLoggedIn = false;
+        $window.location.href = '#/Login';
+      } else {
+        throw error;
+      }
+    }
+  };
+}]);
+
+app.controller('mainController', function($scope, $rootScope, $http, authService, panelService, taskService) {
   
   $scope.panels = [];
   
@@ -22,28 +46,39 @@ app.controller('mainController', function($scope, $http, panelService, taskServi
       tasks: [],
       newTask: { created_by: '', title: '', created_at: '', edit_mode: false }
     };
-    
-    panelService.save(newPanel, function(response) {
-      newPanel.id = response.id;
+
+    if (authService.isLoggedIn) {
+      panelService.save(newPanel, function(response) {
+        newPanel.id = response.id;
+        $scope.panels.push(newPanel);
+      }, function(error) {
+        authService.handleAuthorizationError(error);
+      });
+    } else { 
       $scope.panels.push(newPanel);
-    });
+    }
   };
   
   $scope.createPanel('Welcome');
   
 	$scope.createTask = function(panel) {
+    var test = $rootScope.isLoggedIn;
     if (!panel.newTask.title)
       return;
       
 		panel.newTask.created_at = Date.now();
 		panel.newTask.created_by = 'Pedro';
 		
-    taskService.save({panelId: panel.id}, panel.newTask, function(response) {
-      panel.newTask.id = response.id;
-      panel.tasks.push(panel.newTask);
-      $scope.detailedTask = panel.newTask;
-      panel.newTask = { created_by: '', title: '', created_at: '' };
-    })
+    if (authService.isLoggedIn) {
+      taskService.save({panelId: panel.id}, panel.newTask, function(response) {
+        panel.newTask.id = response.id;
+      }, function(error) {
+        authService.handleAuthorizationError(error);
+      });
+    }
+    panel.tasks.push(panel.newTask);
+    $scope.detailedTask = panel.newTask;
+    panel.newTask = { created_by: '', title: '', created_at: '' };
 	};
   
 	$scope.edit = function(task) {
@@ -69,14 +104,40 @@ app.controller('mainController', function($scope, $http, panelService, taskServi
   }
 });
 
-app.controller('loginController', function($scope, $http, panelService, taskService) {
-  
+app.controller('loginController', function($scope, $rootScope, $http, $window, panelService, taskService) {
+  $scope.user =  { username: '', password: '' };
   $scope.error_message = '';
 
   $scope.login = function() {
+    $rootScope.globalTest = 'from controller!';
+    $scope.error_message = ''
+    $http.post('/auth/login', $scope.user).then(function successCallback(response) {
+      if (response.data.state === 'success') {
+        $rootScope.isLoggedIn = true;
+        $rootScope.currentUser = response.data.user.username;
+        $window.location.href = '#/';
+      } else {
+        $scope.error_message = response.data.message;
+      }
+    }, function errorCallback(error) {
 
-  }
+    });
+  };
 
+  $scope.register = function() {
+    $scope.error_message = '';
+    $http.post('/auth/register', $scope.user).then(function onSuccess(response) {
+      if (response.data.state === 'success') {
+        $rootScope.isLoggedIn = true;
+        $rootScope.currentUser = response.data.user.username;
+        $window.location.href = '#/';
+      } else {
+        $scope.error_message = response.data.message;
+      }
+    }, function onError(error) {
+
+    });
+  };
 });
 
 app.config(function($routeProvider, $locationProvider) {
@@ -94,6 +155,10 @@ app.config(function($routeProvider, $locationProvider) {
       controller: 'loginController'
     })
 
+    .when('/Register', {
+      templateUrl: 'register.html',
+      controller: 'loginController'
+    })
 
 });
 

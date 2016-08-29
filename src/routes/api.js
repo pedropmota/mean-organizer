@@ -4,23 +4,28 @@ var mongoose = require('mongoose');
 var router = express.Router();
 var Panel = mongoose.model('Panel');
 
-function verifyAuthentication(req, res, next)  {
-    if (!req.isAuthenticated())
-        return res.status(401).send('Authentication required.');
-    return next();
-}
+/* Use this middleware when actually requiring authentication for any route. */
+// function verifyAuthentication(req, res, next)  {
+//     if (!req.isAuthenticated())
+//         return res.status(401).send('Authentication required.');
+//     return next();
+// }
 
-//router.use(verifyAuthentication);
+// router.use(verifyAuthentication);
 
 router.route('/panels')
   
   .get(function(req, res, next) {
-    Panel.find(function(err, panels){
-      if(err){
-        return res.status(500).send(err);
-      }
-      return res.send(panels);
-    });
+    if (req.isAuthenticated()) {
+      Panel.find(function(err, panels){
+        if(err){
+          return res.status(500).send(err);
+        }
+        return res.send(panels);
+      });
+    } else {
+      return res.send(req.session.panels ? req.session.panels : {});
+    }
   })
 
   .post(function(req, res, next) {
@@ -28,11 +33,18 @@ router.route('/panels')
     panel.name = req.body.name;
     panel.created_at = Date.now();
     
-    panel.save(function(err, panel) {
-      if (err)
-        return res.status(500).send(err);
-      return res.json({ id: panel._id.toString() });
-    })
+    if (req.isAuthenticated()) {
+      panel.save(function(err, panel) {
+        if (err)
+          return res.status(500).send(err);
+        return res.json({ id: panel._id.toString() });
+      })
+    } else {
+      if (!req.session.panels)
+        req.session.panels = {};
+      req.session.panels.push(panel);
+      req.session.save();
+    }
   });
 
 router.route('/panels/:id')

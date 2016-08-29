@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var flash = require('connect-flash');
 require('./models/models');
 var api = require('./routes/api');
 var auth = require('./routes/authenticate');
@@ -29,6 +30,7 @@ app.use(session({ secret: 'under the doormat', resave: true, saveUninitialized: 
 app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.session());
+app.use(flash());
 
 app.use('/auth', auth);
 app.use('/api', api);
