@@ -95,8 +95,8 @@ router.post('/register',
 
 router.get('/login-status', function(req, res) {
     return res.send({ 
-        isLoggedIn: req.user ? true : false,
-        username: req.user ? req.user.username : null
+        isLoggedIn: req.isAuthenticated(),
+        username: req.isAuthenticated() ? req.user.username : null
     });
 });
 

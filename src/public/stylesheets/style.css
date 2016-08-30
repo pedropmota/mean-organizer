@@ -94,8 +94,12 @@ textarea {
 	min-height: 46px;
 }
 
-.panel-name {
+.panel-name, 
+.detailed-task-title {
 	word-wrap: break-word;
+}
+
+.panel-name {
 	text-align: center;
 }
 

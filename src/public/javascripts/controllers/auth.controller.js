@@ -10,7 +10,6 @@
         $scope.error_message = '';
 
         $scope.login = function () {
-            $rootScope.globalTest = 'from controller!';
             $scope.error_message = ''
             $http.post('/auth/login', $scope.user).then(function successCallback(response) {
                 if (response.data.state === 'success') {
