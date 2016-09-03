@@ -53,7 +53,12 @@
             link: function ($scope, $element, $attrs, $controller) {
 
                 $element.bind("click", function () {
-                    this.parentElement.getElementsByTagName('textarea')[0].focus();
+                    var input = this.parentElement.getElementsByTagName('textarea')[0];
+                    
+                    if (!input)
+                        input = this.parentElement.getElementsByTagName('input')[0];
+                    
+                    input.focus();
                 });
             }
         };

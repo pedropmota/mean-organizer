@@ -8,6 +8,12 @@
             $rootScope.isLoggedIn = response.data.isLoggedIn;
             $rootScope.currentUser = response.data.username;
         });
+
+        $rootScope.logout = function() {
+            $http.get('/auth/logout');
+            $rootScope.isLoggedIn = false;
+            $rootScope.currentUser = '';
+        }
     });
 
 })();

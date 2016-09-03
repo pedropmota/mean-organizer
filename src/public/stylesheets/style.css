@@ -54,9 +54,9 @@ textarea {
 }
 
 .details-container {
-	border-right-color: #999999;
+	/*border-right-color: #999999;
     border-right-width: 1px;
-    border-right-style: solid;
+    border-right-style: solid;*/
     padding: 0 18px;
 }
 
@@ -103,6 +103,14 @@ textarea {
 	text-align: center;
 }
 
+.panel-name-edit {
+	width: 100%;
+	margin: 16px 1px 24px;
+	padding: 6px;
+	font-size: 22px;
+	text-align: center;
+}
+
 .panel-container {
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -112,9 +120,9 @@ textarea {
 .panel {
 	width: 220px;
 	height: 100%;
-	border-right-color: #999999;
+	/*border-right-color: #999999;
 	border-right-width: 1px;
-	border-right-style: solid;
+	border-right-style: solid;*/
 	display: inline-block;
 	vertical-align: top;
 	white-space: normal;

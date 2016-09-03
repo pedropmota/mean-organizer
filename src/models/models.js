@@ -8,6 +8,7 @@ var panelSchema = new Schema({
     tasks: [
         { 
             created_by: { type: Schema.ObjectId, ref: 'User' },
+            modified_by: { type: Schema.ObjectId, ref: 'User' },
             created_at: { type: Date, default: Date.now },
             modified_at: { type: Date, default: Date.now },
             title: String,

@@ -4,7 +4,9 @@
     var app = angular.module('app');
 
     app.factory('panelService', ['$resource', function ($resource) {
-        return $resource('/api/panels/:id');
+        return $resource('/api/panels/:id', null, {
+            'update': { method: 'PUT' }
+        });
     }]);
 
     app.factory('taskService', ['$resource', function ($resource) {

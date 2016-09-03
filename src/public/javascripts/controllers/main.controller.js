@@ -10,6 +10,9 @@
 
         $scope.detailedTask = null;
 
+        if ($rootScope.isLoggedIn)
+            loadPanels();
+
         $scope.createPanel = function (name) {
             var newPanel = {
                 name: name ? name : 'New Panel',
@@ -30,10 +33,26 @@
             });
         };
 
-        $scope.createPanel('Welcome');
+        $scope.editPanel = function (panel) {
+            panel.edit_mode = true;
+        };
+
+        $scope.savePanel = function (panel) {
+            panel.edit_mode = false;
+            console.log($scope.panels[0]);
+
+            if (!$rootScope.isLoggedIn) {
+                return;
+            }
+            
+            panelService.update({ id: panel.id }, { name: panel.name }, function (response) {
+            }, function (error) {
+                handleAuthorizationError(error);
+            });
+        };
 
         $scope.createTask = function (panel) {
-            if (!panel.newTask.title)
+            if (!panel.newTask || !panel.newTask.title)
                 return;
 
             if (!$rootScope.isLoggedIn) {
@@ -61,13 +80,13 @@
             
         };
 
-        $scope.edit = function (panel, task) {
+        $scope.editTask = function (panel, task) {
             task.edit_mode = true;
             $scope.detailedTask = task;
             $scope.detailedTask.panelId = panel.id;
         }
 
-        $scope.save = function (panel, task) {
+        $scope.saveTask = function (panel, task) {
             task.edit_mode = false;
             
             if (!$rootScope.isLoggedIn) {
@@ -101,6 +120,11 @@
             });
         };
 
+        function loadPanels() {
+            panelService.query(function (response) {
+                response.forEach(function (p) { $scope.panels.push(p); });
+            });
+        }
 
         function handleAuthorizationError(error) {
             if (error.status === 401) {

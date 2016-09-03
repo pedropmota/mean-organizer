@@ -93,6 +93,11 @@ router.post('/register',
     })
 );
 
+router.get('/logout', function(req, res) {
+    req.logout();
+    return res.send('logged out');
+});
+
 router.get('/login-status', function(req, res) {
     return res.send({ 
         isLoggedIn: req.isAuthenticated(),
