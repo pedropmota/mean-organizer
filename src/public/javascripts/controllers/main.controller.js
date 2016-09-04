@@ -39,7 +39,6 @@
 
         $scope.savePanel = function (panel) {
             panel.edit_mode = false;
-            console.log($scope.panels[0]);
 
             if (!$rootScope.isLoggedIn) {
                 return;
@@ -119,6 +118,20 @@
                 handleAuthorizationError(error);
             });
         };
+
+        $rootScope.$on('InsertAllPanels', function(event, callback) {
+            if (!$scope.panels || !$scope.panels.length) {
+                callback();
+                return;
+            }
+            
+            $http.post('/api/add-all-panels', $scope.panels).then(function success(response) {
+                //alert('Your panels have been saved on the database to the user ' + $rootScope.currentUser + '!');
+                callback();
+            }, function error(err) {
+                handleAuthorizationError(error);
+            });
+        });
 
         function loadPanels() {
             panelService.query(function (response) {

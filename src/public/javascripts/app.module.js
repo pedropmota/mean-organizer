@@ -3,7 +3,7 @@
 
     var app = angular.module('app', ['ngResource', 'ngRoute']);
     
-    app.run(function($http, $rootScope) {
+    app.run(function($http, $rootScope, $window) {
         $http.get('/auth/login-status').then(function onSuccess(response) {
             $rootScope.isLoggedIn = response.data.isLoggedIn;
             $rootScope.currentUser = response.data.username;
@@ -13,6 +13,7 @@
             $http.get('/auth/logout');
             $rootScope.isLoggedIn = false;
             $rootScope.currentUser = '';
+            $window.location.reload();
         }
     });
 

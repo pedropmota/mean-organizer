@@ -1,6 +1,6 @@
 {
-  "name": "meanKanban",
-  "description": "A Kanban board web application for managing projects and tasks.",
+  "name": "mean-organizer",
+  "description": "A web app for managing projects and organizing tasks.",
   "version": "0.0.0",
   "private": true,
   "scripts": {

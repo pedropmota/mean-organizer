@@ -149,7 +149,39 @@
         })
     });
 
-  module.exports = router;
+  router.route('/add-all-panels')
+    .post(function (req, res) {
+      var panels = req.body;
+      if (!panels || !panels.length) 
+        return res.status(400).send('No panels array received.');
+
+      var dbPanels = [];
+
+      panels.forEach(function (panel) {
+        var newPanel = {
+          name: panel.name,
+          created_at: Date.now(),
+          created_by: req.user.id,
+          tasks: []
+        };
+        panel.tasks.forEach(function (task) {
+          newPanel.tasks.push({
+            title: task.title,
+            details: task.details,
+            created_at: Date.now(),
+            created_by: req.user.id
+          });
+        });
+        dbPanels.push(newPanel);
+      });
+
+      Panel.create(dbPanels, function (err, result) {
+        if (err)
+          return res.status(500).send(err);
+        
+        return res.json({ inserted: result.length });
+      });
+    });
 
   function toView(dbPanels) {
     var panelsResponse = [];
@@ -180,5 +212,7 @@
 
     return panelsResponse;
   }
+
+  module.exports = router;
 
 })();
