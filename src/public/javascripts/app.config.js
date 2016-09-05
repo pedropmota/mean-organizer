@@ -6,18 +6,26 @@
             $routeProvider
 
                 .when('/', {
-                    templateUrl: 'main.html',
+                    templateUrl: 'partials/main.html',
                     controller: 'MainController',
                 })
 
                 .when('/Login', {
-                    templateUrl: 'login.html',
+                    templateUrl: 'partials/login.html',
                     controller: 'AuthController'
                 })
 
                 .when('/Register', {
-                    templateUrl: 'register.html',
+                    templateUrl: 'partials/register.html',
                     controller: 'AuthController'
+                })
+
+                .when('/Contact', {
+                    templateUrl: 'partials/contact.html'
+                })
+
+                .when('/About', {
+                    templateUrl: 'partials/about.html'
                 })
 
         });

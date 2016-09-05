@@ -142,3 +142,14 @@ textarea {
 .new-panel {
 	margin-top: 10px;
 }
+
+.contact {
+	margin-left: 10px;
+}
+
+.contact img {
+	width: 48px;
+    margin-right: 8px;
+    margin-top: 5px;
+    opacity: 0.9;
+}
