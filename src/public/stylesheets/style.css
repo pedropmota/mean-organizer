@@ -8,6 +8,10 @@ body {
 	color: #424242;
 }
 
+h2, h3 {
+	margin-top: 10px;
+}
+
 a {
 	color: #00B7FF;
 }
@@ -39,14 +43,6 @@ textarea {
 	border-radius: 5px;
 }
 
-.odd {
-	background-color: #f2f9ff;
-	
-}
-.even {
-	background-color: #eceff3;
-}
-
 .form-auth {
 	max-width: 330px;
 	padding: 5px;
@@ -57,11 +53,20 @@ textarea {
 	/*border-right-color: #999999;
     border-right-width: 1px;
     border-right-style: solid;*/
-    padding: 0 18px;
+    padding: 0 6px;
 }
 
 .welcome {
 	text-align: justify;
+}
+
+.welcome ul {
+	padding-left: 20px;
+	list-style-type: lower-roman;
+}
+
+.welcome li {
+	margin-bottom: 10px;
 }
 
 .task-container,
@@ -118,19 +123,22 @@ textarea {
 }
 
 .panel {
-	width: 220px;
-	height: 100%;
+	width: 200px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal;
+    margin-right: 10px;
+    padding-right: 10px;
 	/*border-right-color: #999999;
 	border-right-width: 1px;
 	border-right-style: solid;*/
-	display: inline-block;
-	vertical-align: top;
-	white-space: normal;
-    margin-right: 14px;
-    padding-right: 14px;
 }
 
 .panel:last-child {
 	border-width: 0px;
 }
 
+.new-panel {
+	margin-top: 10px;
+}

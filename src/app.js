@@ -8,6 +8,7 @@ var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
 require('./models/models');
+var authSetup = require('./auth-setup');
 var api = require('./routes/api');
 var auth = require('./routes/authenticate');
 
@@ -31,6 +32,8 @@ app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.session());
 app.use(flash());
+
+authSetup();
 
 app.use('/auth', auth);
 app.use('/api', api);

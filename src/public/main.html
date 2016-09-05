@@ -17,9 +17,14 @@
 
         <div ng-hide="detailedTask" class="welcome">
             <h2>Welcome!</h2>
-            <p>This area will be used to show and edit a task. But it will also contain a cool how-to-use for the app.</p>
-            <p>The how-to-use will disappear once we create or click on a task, so, the task details will be shown instead.</p>
-            <p>And the how-to-use will appear again when clicking the app title. But that will not reload the page!</p>
+            <h4>How to use:</h4>
+            <ul>
+                <li>Click the New Panel button to start adding tasks.</li>
+                <li>For demostration purposes, panels and tasks can be created anonymously.
+                    They will be saved once you login or register.
+                </li>
+                <li>This left area will show a task's details when one is clicked or created.</li>
+            </ul>
         </div>
 
     </div>
@@ -44,7 +49,7 @@
             <textarea class="new-task-input" ng-blur="createTask(panel)" ng-model="panel.newTask.title" kb-blur-on-enter placeholder="New Task"></textarea>
         </div>
         <div class="panel">
-            <input type="button" value="+ New Panel" ng-click="createPanel()" class="btn" />
+            <input type="button" value="+ New Panel" ng-click="createPanel()" class="btn new-panel" />
         </div>
 
     </div>
