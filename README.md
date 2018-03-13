@@ -1,7 +1,7 @@
 # mean-organizer
 A minimalist one-page application for keeping and organizing tasks. The goal of this repository is to be a good example app for <a href="http:mean.io">MEAN stack</a> projects (AngularJS + Node.js + Express + MongoDB). 
 
-#project structure
+## project structure:
 - [bin](src/bin): Express startup definitions. The [www](src/bin/www)</b> file should be the node startup while debugging.
 - [models](src/models): The [Mongoose](http://mongoosejs.com/) model definitions of our MongoDB documents.
 - [public](src/public): Contains all the static files of our web app, such as the AngularJS scripts and Html files.
